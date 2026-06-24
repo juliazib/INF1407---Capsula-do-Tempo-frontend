@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Criar conta - Cápsula do Tempo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&family=UnifrakturMaguntia&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="nav-right" id="nav-right"></div>
+
+    <div class="main-container">
+      <a href="./index.html" class="header-link">
+        <div class="clock-banner text-center">
+          <img src="./public/img/clock.png" alt="Relógio" class="clock-img" />
+        </div>
+        <div class="title-banner text-center">
+          <h1 class="custom-title">Cápsula do Tempo</h1>
+        </div>
+      </a>
+
+      <nav class="navbar-custom">
+        <div class="nav-center">
+          <a href="./capsulas.html" class="nav-item-frame">Cápsulas</a>
+          <a href="./capsulas.html?action=create" class="nav-item-frame large">Criar cápsula</a>
+          <a href="./login.html" class="nav-item-frame">Login</a>
+          <a href="./registro.html" class="nav-item-frame active">Registrar</a>
+          <a href="./recuperar-senha.html" class="nav-item-frame">Esqueci senha</a>
+        </div>
+      </nav>
+
+      <div class="container">
+        <div class="form-container">
+          <h2>Criar conta</h2>
+          <div id="form-message" class="message" aria-live="polite"></div>
+          <form id="register-form" class="stacked-form" action="javascript:void(0)" novalidate>
+            <label for="username">Usuário</label>
+            <input id="username" name="username" type="text" autocomplete="username" required />
+
+            <label for="nome">Nome</label>
+            <input id="nome" name="nome" type="text" autocomplete="name" required />
+
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+
+            <label for="password">Senha</label>
+            <input id="password" name="password" type="password" autocomplete="new-password" required />
+
+            <button type="submit">Cadastrar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./public/dist/register.js"></script>
+  </body>
+</html>

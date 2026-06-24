@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirmação de recuperação - Cápsula do Tempo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&family=UnifrakturMaguntia&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="nav-right" id="nav-right"></div>
+
+    <div class="main-container">
+      <a href="./index.html" class="header-link">
+        <div class="clock-banner text-center">
+          <img src="./public/img/clock.png" alt="Relógio" class="clock-img" />
+        </div>
+        <div class="title-banner text-center">
+          <h1 class="custom-title">Cápsula do Tempo</h1>
+        </div>
+      </a>
+
+      <nav class="navbar-custom">
+        <div class="nav-center">
+          <a href="./capsulas.html" class="nav-item-frame">Cápsulas</a>
+          <a href="./capsulas.html?action=create" class="nav-item-frame large">Criar cápsula</a>
+          <a href="./login.html" class="nav-item-frame">Login</a>
+          <a href="./registro.html" class="nav-item-frame">Registrar</a>
+          <a href="./recuperar-senha.html" class="nav-item-frame">Esqueci senha</a>
+        </div>
+      </nav>
+
+      <div class="container">
+        <div class="form-container">
+          <h2>Confirmar recuperação</h2>
+          <div id="form-message" class="message" aria-live="polite"></div>
+          <p>Informe o token recebido por e-mail, seu e-mail e defina a nova senha.</p>
+          <form id="confirm-reset-form" class="stacked-form" action="javascript:void(0)" novalidate>
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" required autocomplete="email" />
+
+            <label for="token">Token</label>
+            <input id="token" name="token" type="text" required autocomplete="one-time-code" />
+
+            <label for="new-password">Nova senha</label>
+            <input id="new-password" name="new-password" type="password" required autocomplete="new-password" />
+
+            <label for="confirm-password">Confirmar nova senha</label>
+            <input id="confirm-password" name="confirm-password" type="password" required autocomplete="new-password" />
+
+            <button type="submit">Redefinir senha</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./public/dist/reset-password-confirm.js"></script>
+  </body>
+</html>
