@@ -223,6 +223,14 @@ export async function updateCurrentUser(payload: Record<string, string>): Promis
   }));
 }
 
+export async function deleteCurrentUser(password: string) {
+  return parseResponse(await fetch(`${API_BASE}/user/`, {
+    method: 'DELETE',
+    headers: buildHeaders(),
+    body: JSON.stringify({ password }),
+  }));
+}
+
 export async function fetchCapsulas() {
   return parseResponse(await fetch(`${API_BASE}/capsulas/`, {
     method: 'GET',

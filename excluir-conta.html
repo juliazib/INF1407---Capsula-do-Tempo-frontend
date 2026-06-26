@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Editar Perfil - Cápsula do Tempo</title>
+    <title>Excluir conta - Cápsula do Tempo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&family=UnifrakturMaguntia&display=swap" rel="stylesheet" />
@@ -34,30 +34,24 @@
 
       <div class="container">
         <div class="form-container">
-          <h2>Editar perfil</h2>
+          <h2>Excluir conta</h2>
           <div id="form-message" class="message" aria-live="polite"></div>
-          <form id="profile-form" class="stacked-form" action="javascript:void(0)" novalidate>
-            <label for="username">Usuário</label>
-            <input id="username" name="username" type="text" autocomplete="username" required />
+          <p>
+            Esta ação remove permanentemente sua conta, suas cápsulas e todos os dados associados.
+            Confirme sua senha atual para continuar.
+          </p>
+          <p id="account-summary" class="help-text"></p>
+          <form id="delete-account-form" class="stacked-form" action="javascript:void(0)" novalidate>
+            <label for="password">Senha atual</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required />
 
-            <label for="nome">Nome</label>
-            <input id="nome" name="nome" type="text" autocomplete="name" required />
-
-            <label for="email">E-mail</label>
-            <input id="email" name="email" type="email" autocomplete="email" required />
-
-            <label for="password">Nova senha</label>
-            <input id="password" name="password" type="password" autocomplete="new-password" />
-            <p class="help-text">Deixe em branco se não quiser alterar a senha.</p>
-
-            <button type="submit">Salvar</button>
+            <button type="submit">Excluir minha conta</button>
           </form>
-
-          <p class="text-center"><a href="./excluir-conta.html" class="btn btn-danger">Excluir minha conta</a></p>
+          <p class="text-center"><a href="./profile.html">Voltar ao perfil</a></p>
         </div>
       </div>
     </div>
 
-    <script type="module" src="./public/dist/profile.js"></script>
+    <script type="module" src="./public/dist/delete-user.js"></script>
   </body>
 </html>

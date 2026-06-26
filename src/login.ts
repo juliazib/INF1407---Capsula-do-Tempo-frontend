@@ -11,6 +11,10 @@ if (params.get('message') === 'login-required') {
   showMessage(message, 'Você precisa estar logado para acessar essa área.');
 }
 
+if (params.get('message') === 'account-deleted') {
+  showMessage(message, 'Sua conta foi excluída com sucesso.');
+}
+
 form?.addEventListener('submit', async (event) => {
   event.preventDefault();
   const formData = new FormData(form);
