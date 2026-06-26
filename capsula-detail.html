@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cápsula do Tempo</title>
+    <link rel="stylesheet" href="./styles.css">
+    <style>
+        .capsula-detail-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .capsula-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #d4c5b9;
+            padding-bottom: 20px;
+        }
+
+        .capsula-detalhe-titulo {
+            font-size: 36px;
+            font-weight: 300;
+            color: #2c2c2c;
+            margin: 0 0 20px 0;
+        }
+
+        .capsula-meta {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .capsula-content-area {
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        .paper-letter {
+            background-color: #fffcf9;
+            border: 1px solid #d4c5b9;
+            padding: 50px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .letter-greeting {
+            font-size: 18px;
+            font-style: italic;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .text-item {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .locked-message {
+            text-align: center;
+            padding: 40px;
+            background-color: #fff5f5;
+            border: 2px solid #feb2b2;
+            border-radius: 4px;
+            max-width: 600px;
+        }
+
+        .locked-message h2 {
+            color: #822;
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        .locked-message p {
+            color: #555;
+            font-size: 16px;
+        }
+
+        .capsula-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #d4c5b9;
+        }
+
+        .btn-back {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #8b0000;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-family: "Cutive Mono", monospace;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #650000;
+        }
+
+        .empty-msg {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            margin: 40px 0;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 16px;
+            color: #555;
+            padding: 40px;
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 40px;
+            background-color: #fff5f5;
+            border: 2px solid #feb2b2;
+            border-radius: 4px;
+            color: #822;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-right" class="nav-right"></div>
+
+    <div class="capsula-detail-container">
+        <div id="capsula-content" class="loading">Carregando cápsula...</div>
+    </div>
+
+    <script type="module" src="./public/dist/capsula-detail.js"></script>
+</body>
+</html>
