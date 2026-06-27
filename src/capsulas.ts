@@ -137,37 +137,39 @@ function renderCapsulasPage(capsulas: Array<Record<string, unknown>>) {
   attachDeleteLinks();
 }
 
+function parseLocalDate(value: unknown): Date | null {
+  if (!value) return null;
+  const stringValue = String(value);
+
+  const parts = stringValue.split('-');
+  if (parts.length === 3 && parts.every((part) => /^[0-9]{2,4}$/.test(part))) {
+    const [year, month, day] = parts.map(Number);
+    if (!Number.isNaN(year) && !Number.isNaN(month) && !Number.isNaN(day)) {
+      const date = new Date(year, month - 1, day);
+      if (!Number.isNaN(date.getTime())) {
+        return date;
+      }
+    }
+  }
+
+  const fallback = new Date(stringValue);
+  return Number.isNaN(fallback.getTime()) ? null : fallback;
+}
+
 function formatDatePtBR(value: unknown): string {
-  if (!value) return '';
-  const date = new Date(String(value));
-  if (Number.isNaN(date.getTime())) return String(value);
+  const date = parseLocalDate(value);
+  if (!date) return String(value || '');
   return date.toLocaleDateString('pt-BR');
 }
 
 function isPastDate(value: string): boolean {
-  if (!value) return false;
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return false;
+  const date = parseLocalDate(value);
+  if (!date) return false;
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
-  return date < today;
-}
 
-function formatDatePtBR(value: unknown): string {
-  if (!value) return '';
-  const date = new Date(String(value));
-  if (Number.isNaN(date.getTime())) return String(value);
-  return date.toLocaleDateString('pt-BR');
-}
-
-function isPastDate(value: string): boolean {
-  if (!value) return false;
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return false;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  date.setHours(0, 0, 0, 0);
   return date < today;
 }
 
@@ -177,9 +179,14 @@ function isPastDate(value: string): boolean {
  * @returns True quando a data de abertura ja chegou.
  */
 function isCapsulaAvailable(capsula: Record<string, unknown>): boolean {
-  const dataAbertura = capsula.data_abertura ? new Date(String(capsula.data_abertura)) : null;
+  const dataAbertura = parseLocalDate(capsula.data_abertura);
   if (!dataAbertura) return false;
-  return dataAbertura <= new Date();
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  dataAbertura.setHours(0, 0, 0, 0);
+
+  return dataAbertura <= today;
 }
 
 /**
@@ -261,7 +268,9 @@ function createFormMarkup() {
   dataInput.name = 'data_abertura';
   dataInput.type = 'date';
   dataInput.required = true;
-  dataInput.min = new Date().toISOString().split('T')[0];
+  const today = new Date();
+  const todayMin = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  dataInput.min = todayMin;
   form.appendChild(dataInput);
 
   form.appendChild(createElement('label', undefined, 'Senha de edição'));
@@ -324,7 +333,9 @@ function editFormMarkup(capsula: Record<string, unknown>) {
   dataInput.type = 'date';
   dataInput.value = String(capsula.data_abertura || '');
   dataInput.required = true;
-  dataInput.min = new Date().toISOString().split('T')[0];
+  const today = new Date();
+  const todayMin = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  dataInput.min = todayMin;
   form.appendChild(dataInput);
 
   form.appendChild(createElement('label', undefined, 'Senha de edição'));
