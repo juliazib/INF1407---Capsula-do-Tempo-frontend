@@ -1,4 +1,4 @@
-const API_BASE = "https://inf-1407-capsula-do-tempo-backend.vercel.app/"
+const API_BASE = "https://inf-1407-capsula-do-tempo-backend.vercel.app/api"
 
 export type ApiError = {
   message: string;
