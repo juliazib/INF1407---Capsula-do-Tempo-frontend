@@ -93,7 +93,7 @@ body {
     min-width: 200px;
     height: 80px;
     white-space: nowrap;
-    background-image: url("./public/img/frame1.png");
+    background-image: url("./img/frame1.png");
     background-size: cover;
     background-position: center;
     text-decoration: none;
