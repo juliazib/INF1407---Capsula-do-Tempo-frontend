@@ -20,7 +20,7 @@ Tudo o que foi desenvolvido está funcionando.
 
 ### 1. Acesso via site
 Para testar o site, acesse o link:
-👉 **()**
+👉 **(https://inf-1407-capsula-do-tempo-frontend.vercel.app/)**
 
 ### 2. Execução em ambiente local
 Caso deseje rodar o site em sua máquina, certifique-se de que tem o Python e o Node.js instalados e siga os passos a seguir. 
@@ -46,6 +46,9 @@ npm install
 
 # 7. Fazer o build da aplicação
 npm run build
+
+# 8. Entrar em /public
+cd public
 
 # 8. Iniciar a aplicação
 python3 -m http.server 3000
@@ -99,14 +102,15 @@ Preencha a sua cápsula com título, data de abertura e um texto para o seu futu
 
 Assim que você criar uma cápsula, ela ficará salva no seu perfil. Para ver todas as suas cápsulas criadas, basta clicar em "Cápsulas". 
 
-imagem da cápsula
+<img width="1232" height="815" alt="image" src="https://github.com/user-attachments/assets/1f3de836-6959-4666-8472-5a86ddee1940" />
+
 
 ### 5. Edição de cápsulas do tempo
 Para editar uma cápsula do tempo, clique em "Editar". É necessário inserir a senha que você definiu no momento da criação. 
 
-imagem da edição
+<img width="778" height="777" alt="image" src="https://github.com/user-attachments/assets/33b7f09b-3c98-4234-9b21-da99779867a2" />
 
-Quando estiver satisfeito com as suas mudanças, clique em "Salvar".
+Quando estiver satisfeito com as suas mudanças, clique em "Salvar alterações".
 
 ⚠️ Não é possível editar cápsulas após a sua data de abertura.
 
