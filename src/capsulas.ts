@@ -137,6 +137,17 @@ function renderCapsulasPage(capsulas: Array<Record<string, unknown>>) {
   attachDeleteLinks();
 }
 
+/**
+ * Converte um valor em um objeto `Date`.
+ *
+ * Primeiro tenta interpretar o valor no formato `YYYY-MM-DD`,
+ * evitando problemas de fuso horário causados pelo construtor
+ * padrão de `Date`. Caso o formato não corresponda, utiliza
+ * o parser nativo do JavaScript como alternativa.
+ *
+ * @param value - Valor contendo uma data.
+ * @returns Um objeto `Date` válido ou `null` caso a conversão falhe.
+ */
 function parseLocalDate(value: unknown): Date | null {
   if (!value) return null;
   const stringValue = String(value);
@@ -156,12 +167,30 @@ function parseLocalDate(value: unknown): Date | null {
   return Number.isNaN(fallback.getTime()) ? null : fallback;
 }
 
+/**
+ * Formata uma data para o padrão brasileiro (`dd/mm/aaaa`).
+ *
+ * Caso o valor informado não represente uma data válida,
+ * retorna sua representação em texto.
+ *
+ * @param value - Valor contendo uma data.
+ * @returns A data formatada no padrão brasileiro ou o valor original em formato de texto.
+ */
 function formatDatePtBR(value: unknown): string {
   const date = parseLocalDate(value);
   if (!date) return String(value || '');
   return date.toLocaleDateString('pt-BR');
 }
 
+/**
+ * Verifica se uma data é anterior ao dia atual.
+ *
+ * A comparação considera apenas a data, ignorando horas,
+ * minutos e segundos.
+ *
+ * @param value - Data no formato de texto.
+ * @returns `true` se a data for anterior à data atual; caso contrário, `false`.
+ */
 function isPastDate(value: string): boolean {
   const date = parseLocalDate(value);
   if (!date) return false;
