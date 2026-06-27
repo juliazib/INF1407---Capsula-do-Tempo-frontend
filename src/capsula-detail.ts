@@ -121,6 +121,16 @@ function renderCapsulaDetail(capsula: Record<string, unknown>) {
   backBtn.textContent = '← Voltar para a Galeria';
   footer.appendChild(backBtn);
 
+  // Adicionar botão de editar se a cápsula está selada
+  if (!isAvailable) {
+    const editBtn = document.createElement('a');
+    editBtn.href = `./capsulas.html?edit=${String(capsula.id)}`;
+    editBtn.className = 'btn-back';
+    editBtn.textContent = '✏️ Editar';
+    editBtn.style.marginLeft = '10px';
+    footer.appendChild(editBtn);
+  }
+
   contentContainer.appendChild(footer);
 }
 
