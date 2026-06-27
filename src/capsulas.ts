@@ -137,6 +137,40 @@ function renderCapsulasPage(capsulas: Array<Record<string, unknown>>) {
   attachDeleteLinks();
 }
 
+function formatDatePtBR(value: unknown): string {
+  if (!value) return '';
+  const date = new Date(String(value));
+  if (Number.isNaN(date.getTime())) return String(value);
+  return date.toLocaleDateString('pt-BR');
+}
+
+function isPastDate(value: string): boolean {
+  if (!value) return false;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  date.setHours(0, 0, 0, 0);
+  return date < today;
+}
+
+function formatDatePtBR(value: unknown): string {
+  if (!value) return '';
+  const date = new Date(String(value));
+  if (Number.isNaN(date.getTime())) return String(value);
+  return date.toLocaleDateString('pt-BR');
+}
+
+function isPastDate(value: string): boolean {
+  if (!value) return false;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  date.setHours(0, 0, 0, 0);
+  return date < today;
+}
+
 /**
  * Verifica se uma capsula ja esta disponivel para abertura.
  * @param capsula Dados da capsula.
@@ -156,7 +190,7 @@ function isCapsulaAvailable(capsula: Record<string, unknown>): boolean {
 function envelopeMarkup(capsula: Record<string, unknown>) {
   const id = Number(capsula.id);
   const title = String(capsula.titulo || 'Sem título');
-  const openDate = String(capsula.data_abertura || '');
+  const openDate = formatDatePtBR(capsula.data_abertura);
   const available = isCapsulaAvailable(capsula);
   const hasTextos = Boolean(capsula.textos && Array.isArray(capsula.textos) && capsula.textos.length);
 
@@ -227,6 +261,7 @@ function createFormMarkup() {
   dataInput.name = 'data_abertura';
   dataInput.type = 'date';
   dataInput.required = true;
+  dataInput.min = new Date().toISOString().split('T')[0];
   form.appendChild(dataInput);
 
   form.appendChild(createElement('label', undefined, 'Senha de edição'));
@@ -289,6 +324,7 @@ function editFormMarkup(capsula: Record<string, unknown>) {
   dataInput.type = 'date';
   dataInput.value = String(capsula.data_abertura || '');
   dataInput.required = true;
+  dataInput.min = new Date().toISOString().split('T')[0];
   form.appendChild(dataInput);
 
   form.appendChild(createElement('label', undefined, 'Senha de edição'));
@@ -332,6 +368,11 @@ function attachCreateFormHandlers() {
   form?.addEventListener('submit', async (event) => {
     event.preventDefault();
     const formData = new FormData(form);
+    const dateValue = String(formData.get('data_abertura') || '');
+    if (isPastDate(dateValue)) {
+      showMessage(message, 'A data de abertura não pode ser anterior a hoje.');
+      return;
+    }
     const payload: Record<string, string> = {};
     formData.forEach((value, key) => {
       payload[key] = String(value);
@@ -366,6 +407,12 @@ function attachEditFormHandlers() {
     event.preventDefault();
     
     const formData = new FormData(form);
+    const dateValue = String(formData.get('data_abertura') || '');
+    if (isPastDate(dateValue)) {
+      showMessage(message, 'A data de abertura não pode ser anterior a hoje.');
+      return;
+    }
+
     const payload: Record<string, string> = {};
     formData.forEach((value, key) => {
       payload[key] = String(value);
