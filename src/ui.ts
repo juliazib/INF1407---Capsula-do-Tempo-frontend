@@ -26,7 +26,7 @@ export function renderNav() {
     profileLink.className = 'profile-link';
 
     const profileImage = document.createElement('img');
-    profileImage.src = './public/img/perfil.png';
+    profileImage.src = './img/perfil.png';
     profileImage.alt = 'Perfil';
     profileLink.appendChild(profileImage);
 
