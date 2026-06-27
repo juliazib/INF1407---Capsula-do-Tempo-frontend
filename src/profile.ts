@@ -6,6 +6,9 @@ renderNav();
 const form = document.getElementById('profile-form') as HTMLFormElement | null;
 const message = document.getElementById('form-message');
 
+/**
+ * Carrega os dados atuais do usuário e preenche o formulário de perfil.
+ */
 async function loadProfile() {
   try {
     const user = await getCurrentUser();

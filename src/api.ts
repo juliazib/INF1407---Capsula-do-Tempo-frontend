@@ -9,6 +9,11 @@ function getToken(): string | null {
   return localStorage.getItem('capsula_token');
 }
 
+/**
+ * Monta os headers padrão das requisições e inclui Authorization quando houver token.
+ * @param includeJson Define se deve incluir o Content-Type application/json.
+ * @returns Objeto de headers para o fetch.
+ */
 function buildHeaders(includeJson = true): HeadersInit {
   const headers: Record<string, string> = {};
   if (includeJson) headers['Content-Type'] = 'application/json';
@@ -17,6 +22,11 @@ function buildHeaders(includeJson = true): HeadersInit {
   return headers;
 }
 
+/**
+ * Traduz mensagens do backend para mensagens amigáveis ao usuário.
+ * @param message Mensagem original retornada pela API.
+ * @returns Mensagem normalizada para exibição na interface.
+ */
 function normalizeBackendMessage(message: string): string {
   const lower = message.toLowerCase();
 
@@ -51,6 +61,12 @@ function normalizeBackendMessage(message: string): string {
   return message;
 }
 
+/**
+ * Converte erros por campo em uma mensagem de texto legível.
+ * @param key Nome do campo com erro.
+ * @param value Conteúdo do erro retornado pelo backend.
+ * @returns Mensagem de erro formatada.
+ */
 function formatFieldError(key: string, value: unknown): string {
   if (Array.isArray(value)) {
     const items = value.map((item) => String(item).trim()).filter(Boolean);
@@ -93,6 +109,12 @@ function formatFieldError(key: string, value: unknown): string {
   return '';
 }
 
+/**
+ * Extrai uma mensagem de erro de uma resposta da API.
+ * @param data Payload de erro retornado pelo backend.
+ * @param statusText Texto de status HTTP para fallback.
+ * @returns Mensagem final pronta para exibição.
+ */
 function getErrorMessage(data: unknown, statusText: string): string {
   if (!data || typeof data !== 'object') {
     return statusText || 'Erro inesperado. Tente novamente mais tarde.';
@@ -118,6 +140,11 @@ function getErrorMessage(data: unknown, statusText: string): string {
   return statusText || 'Erro inesperado. Tente novamente mais tarde.';
 }
 
+/**
+ * Verifica se uma mensagem indica token inválido ou expirado.
+ * @param message Mensagem de erro para análise.
+ * @returns True quando a mensagem corresponde a erro de token.
+ */
 function isInvalidTokenMessage(message: string) {
   const lower = message.toLowerCase();
   return (
@@ -126,6 +153,12 @@ function isInvalidTokenMessage(message: string) {
   );
 }
 
+/**
+ * Decide se a sessão deve ser encerrada com base em erro de autenticação.
+ * @param response Resposta HTTP recebida.
+ * @param data Corpo da resposta parseado.
+ * @returns True quando deve forçar logout por token inválido.
+ */
 function shouldLogoutOnAuthError(response: Response, data: unknown) {
   if (response.status !== 401) {
     return false;
@@ -147,6 +180,11 @@ function shouldLogoutOnAuthError(response: Response, data: unknown) {
   return false;
 }
 
+/**
+ * Interpreta a resposta do fetch e dispara ApiError quando houver falha.
+ * @param response Resposta HTTP retornada pela API.
+ * @returns Dados parseados e tipados da resposta.
+ */
 async function parseResponse<T>(response: Response): Promise<T> {
   const text = await response.text();
   let data: unknown = {};
@@ -173,6 +211,12 @@ async function parseResponse<T>(response: Response): Promise<T> {
   return data as T;
 }
 
+/**
+ * Realiza login e salva o token de acesso no armazenamento local.
+ * @param username Nome de usuario para autenticacao.
+ * @param password Senha do usuario.
+ * @returns Payload de autenticacao retornado pela API.
+ */
 export async function loginUser(username: string, password: string) {
   const response = await fetch(`${API_BASE}/token/`, {
     method: 'POST',
@@ -184,6 +228,11 @@ export async function loginUser(username: string, password: string) {
   return data;
 }
 
+/**
+ * Envia os dados de cadastro para criar um novo usuario.
+ * @param payload Campos de registro do usuario.
+ * @returns Resposta da API de cadastro.
+ */
 export async function registerUser(payload: Record<string, string>) {
   return parseResponse(await fetch(`${API_BASE}/register/`, {
     method: 'POST',
@@ -192,6 +241,11 @@ export async function registerUser(payload: Record<string, string>) {
   }));
 }
 
+/**
+ * Solicita início do fluxo de recuperação de senha por e-mail.
+ * @param email E-mail da conta a recuperar.
+ * @returns Resposta da API com status da solicitação.
+ */
 export async function requestPasswordReset(email: string) {
   return parseResponse(await fetch(`${API_BASE}/password-reset/`, {
     method: 'POST',
@@ -200,6 +254,13 @@ export async function requestPasswordReset(email: string) {
   }));
 }
 
+/**
+ * Confirma redefinição de senha usando token de recuperação.
+ * @param email E-mail do usuário.
+ * @param token Token de recuperação recebido.
+ * @param newPassword Nova senha a ser aplicada.
+ * @returns Resposta da API após redefinição.
+ */
 export async function confirmPasswordReset(email: string, token: string, newPassword: string) {
   return parseResponse(await fetch(`${API_BASE}/password-reset/confirm/`, {
     method: 'POST',
@@ -208,6 +269,10 @@ export async function confirmPasswordReset(email: string, token: string, newPass
   }));
 }
 
+/**
+ * Busca os dados do usuário autenticado.
+ * @returns Perfil atual do usuário.
+ */
 export async function getCurrentUser(): Promise<Record<string, unknown>> {
   return parseResponse<Record<string, unknown>>(await fetch(`${API_BASE}/user/`, {
     method: 'GET',
@@ -215,6 +280,11 @@ export async function getCurrentUser(): Promise<Record<string, unknown>> {
   }));
 }
 
+/**
+ * Atualiza os dados do usuário autenticado.
+ * @param payload Campos de perfil a serem alterados.
+ * @returns Perfil atualizado retornado pela API.
+ */
 export async function updateCurrentUser(payload: Record<string, string>): Promise<Record<string, unknown>> {
   return parseResponse<Record<string, unknown>>(await fetch(`${API_BASE}/user/`, {
     method: 'PUT',
@@ -223,6 +293,11 @@ export async function updateCurrentUser(payload: Record<string, string>): Promis
   }));
 }
 
+/**
+ * Exclui a conta do usuário autenticado após validação de senha.
+ * @param password Senha de confirmação da exclusão.
+ * @returns Resposta da API para a operação de exclusão.
+ */
 export async function deleteCurrentUser(password: string) {
   return parseResponse(await fetch(`${API_BASE}/user/`, {
     method: 'DELETE',
@@ -231,6 +306,10 @@ export async function deleteCurrentUser(password: string) {
   }));
 }
 
+/**
+ * Lista as cápsulas do usuário autenticado.
+ * @returns Coleção de cápsulas retornada pela API.
+ */
 export async function fetchCapsulas() {
   return parseResponse(await fetch(`${API_BASE}/capsulas/`, {
     method: 'GET',
@@ -238,6 +317,11 @@ export async function fetchCapsulas() {
   }));
 }
 
+/**
+ * Busca os detalhes de uma cápsula pelo identificador.
+ * @param id ID da cápsula desejada.
+ * @returns Dados completos da cápsula.
+ */
 export async function fetchCapsulaById(id: number) {
   return parseResponse(await fetch(`${API_BASE}/capsulas/${id}/`, {
     method: 'GET',
@@ -245,6 +329,11 @@ export async function fetchCapsulaById(id: number) {
   }));
 }
 
+/**
+ * Cria uma nova cápsula.
+ * @param payload Dados da cápsula e conteúdo inicial.
+ * @returns Resposta da API com a cápsula criada.
+ */
 export async function createCapsula(payload: Record<string, unknown>) {
   return parseResponse(await fetch(`${API_BASE}/capsulas/`, {
     method: 'POST',
@@ -253,6 +342,12 @@ export async function createCapsula(payload: Record<string, unknown>) {
   }));
 }
 
+/**
+ * Atualiza uma cápsula existente.
+ * @param id ID da cápsula a ser editada.
+ * @param payload Campos atualizados da cápsula.
+ * @returns Resposta da API com a cápsula atualizada.
+ */
 export async function updateCapsula(id: number, payload: Record<string, unknown>) {
   return parseResponse(await fetch(`${API_BASE}/capsulas/${id}/`, {
     method: 'PUT',
@@ -261,6 +356,11 @@ export async function updateCapsula(id: number, payload: Record<string, unknown>
   }));
 }
 
+/**
+ * Remove uma cápsula pelo identificador.
+ * @param id ID da cápsula a excluir.
+ * @returns Resposta da API para a exclusão.
+ */
 export async function deleteCapsula(id: number) {
   return parseResponse(await fetch(`${API_BASE}/capsulas/${id}/`, {
     method: 'DELETE',
@@ -268,6 +368,12 @@ export async function deleteCapsula(id: number) {
   }));
 }
 
+/**
+ * Valida a senha para liberar edição de uma cápsula protegida.
+ * @param id ID da cápsula a autorizar.
+ * @param password Senha informada para edição.
+ * @returns Resultado da autorização enviado pela API.
+ */
 export async function authorizeCapsulaEdit(id: number, password: string) {
   return parseResponse(await fetch(`${API_BASE}/capsulas/${id}/authorize/`, {
     method: 'POST',
@@ -276,10 +382,17 @@ export async function authorizeCapsulaEdit(id: number, password: string) {
   }));
 }
 
+/**
+ * Encerra a sessão removendo o token local.
+ */
 export function logoutUser() {
   localStorage.removeItem('capsula_token');
 }
 
+/**
+ * Informa se existe sessão autenticada no navegador.
+ * @returns True quando houver token salvo.
+ */
 export function isAuthenticated() {
   return Boolean(getToken());
 }

@@ -7,6 +7,9 @@ const form = document.getElementById('delete-account-form') as HTMLFormElement |
 const message = document.getElementById('form-message');
 const accountSummary = document.getElementById('account-summary');
 
+/**
+ * Carrega dados básicos da conta e exibe resumo da exclusão.
+ */
 async function loadCurrentAccount() {
   try {
     const user = await getCurrentUser();

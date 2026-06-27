@@ -9,12 +9,23 @@ if (!page) {
   throw new Error('Container de cápsulas não encontrado.');
 }
 
+/**
+ * Remove todos os filhos de um elemento para renderizar novamente
+ * @param element Elemento a ser limpo.
+ */
 function clearElement(element: HTMLElement) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
   }
 }
 
+/**
+ * Cria elemento HTML tipado com classe e texto opcionais.
+ * @param tag Tag HTML a ser criada.
+ * @param className Classe CSS opcional.
+ * @param text Conteudo textual opcional.
+ * @returns Elemento criado.
+ */
 function createElement<K extends keyof HTMLElementTagNameMap>(tag: K, className?: string, text?: string) {
   const element = document.createElement(tag);
   if (className) element.className = className;
@@ -22,6 +33,13 @@ function createElement<K extends keyof HTMLElementTagNameMap>(tag: K, className?
   return element;
 }
 
+/**
+ * Cria um link com texto, destino e classe opcionais.
+ * @param text Texto do link.
+ * @param href URL de destino.
+ * @param className Classe CSS opcional.
+ * @returns Elemento anchor configurado.
+ */
 function createLink(text: string, href: string, className?: string) {
   const link = document.createElement('a');
   link.href = href;
@@ -30,6 +48,9 @@ function createLink(text: string, href: string, className?: string) {
   return link;
 }
 
+/**
+ * Renderiza a tela de acesso restrito para usuarios nao autenticados.
+ */
 function renderAuthRequired() {
   clearElement(page);
 
@@ -44,10 +65,16 @@ function renderAuthRequired() {
   page.appendChild(wrapper);
 }
 
+/**
+ * Redireciona para a pagina de login com mensagem de autenticacao obrigatoria.
+ */
 function redirectToLogin() {
   window.location.href = './login.html?message=login-required';
 }
 
+/**
+ * Carrega capsulas da API e aciona a renderizacao da pagina.
+ */
 async function loadCapsulas() {
   if (!localStorage.getItem('capsula_token')) {
     renderAuthRequired();
@@ -67,6 +94,10 @@ async function loadCapsulas() {
   }
 }
 
+/**
+ * Renderiza toda a estrutura da pagina de capsulas e conecta eventos.
+ * @param capsulas Lista de capsulas retornadas pela API.
+ */
 function renderCapsulasPage(capsulas: Array<Record<string, unknown>>) {
   clearElement(page);
 
@@ -106,12 +137,22 @@ function renderCapsulasPage(capsulas: Array<Record<string, unknown>>) {
   attachDeleteLinks();
 }
 
+/**
+ * Verifica se uma capsula ja esta disponivel para abertura.
+ * @param capsula Dados da capsula.
+ * @returns True quando a data de abertura ja chegou.
+ */
 function isCapsulaAvailable(capsula: Record<string, unknown>): boolean {
   const dataAbertura = capsula.data_abertura ? new Date(String(capsula.data_abertura)) : null;
   if (!dataAbertura) return false;
   return dataAbertura <= new Date();
 }
 
+/**
+ * Monta o card de envelope para uma cápsula.
+ * @param capsula Dados da cápsula.
+ * @returns Elemento HTML que representa a cápsula na grade.
+ */
 function envelopeMarkup(capsula: Record<string, unknown>) {
   const id = Number(capsula.id);
   const title = String(capsula.titulo || 'Sem título');
@@ -154,6 +195,10 @@ function envelopeMarkup(capsula: Record<string, unknown>) {
   return wrapper;
 }
 
+/**
+ * Cria o markup do formulario de criacao de capsula.
+ * @returns Container com o formulario completo.
+ */
 function createFormMarkup() {
   const wrapper = createElement('div', 'form-container');
   wrapper.appendChild(createElement('h2', undefined, 'Criar cápsula'));
@@ -208,6 +253,11 @@ function createFormMarkup() {
   return wrapper;
 }
 
+/**
+ * Cria o markup do formulário de edição de cápsula com dados pré-preenchidos.
+ * @param capsula Dados da cápsula selecionada para edição.
+ * @returns Container com o formulário completo de edição.
+ */
 function editFormMarkup(capsula: Record<string, unknown>) {
   const wrapper = createElement('div', 'form-container');
   wrapper.appendChild(createElement('h2', undefined, 'Editar cápsula'));
@@ -269,6 +319,9 @@ function editFormMarkup(capsula: Record<string, unknown>) {
   return wrapper;
 }
 
+/**
+ * Anexa o handler de envio do formulário de criação de cápsula.
+ */
 function attachCreateFormHandlers() {
   if (!localStorage.getItem('capsula_token')) {
     redirectToLogin();
@@ -295,6 +348,9 @@ function attachCreateFormHandlers() {
   });
 }
 
+/**
+ * Anexa o handler de envio do formulário de edição de cápsula.
+ */
 function attachEditFormHandlers() {
   if (!localStorage.getItem('capsula_token')) {
     redirectToLogin();
@@ -326,6 +382,9 @@ function attachEditFormHandlers() {
   });
 }
 
+/**
+ * Anexa handlers de exclusão para todos os links de remover capsula.
+ */
 function attachDeleteLinks() {
   if (!localStorage.getItem('capsula_token')) {
     redirectToLogin();

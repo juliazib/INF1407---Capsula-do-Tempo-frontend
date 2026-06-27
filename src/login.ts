@@ -15,6 +15,10 @@ if (params.get('message') === 'account-deleted') {
   showMessage(message, 'Sua conta foi excluída com sucesso.');
 }
 
+/**
+ * Processa credenciais de login e redireciona para a galeria ao autenticar.
+ * @param event Evento de submit do formulario.
+ */
 form?.addEventListener('submit', async (event) => {
   event.preventDefault();
   const formData = new FormData(form);

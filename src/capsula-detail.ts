@@ -5,18 +5,30 @@ renderNav();
 
 const contentContainer = document.getElementById('capsula-content')!;
 
+/**
+ * Limpa todo o conteúdo de um elemento para nova renderização.
+ * @param element Elemento a ser limpo.
+ */
 function clearElement(element: HTMLElement) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
   }
 }
 
+/**
+ * Lê o ID da cápsula a partir da query string.
+ * @returns ID numérico da cápsula ou null quando ausente/inválido.
+ */
 function getCapsulaIdFromUrl(): number | null {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   return id ? Number(id) : null;
 }
 
+/**
+ * Renderiza os detalhes da cápsula, incluindo estado selada ou aberta.
+ * @param capsula Dados da cápsula retornados pela API.
+ */
 function renderCapsulaDetail(capsula: Record<string, unknown>) {
   const dataAbertura = capsula.data_abertura ? new Date(String(capsula.data_abertura)) : null;
   const isAvailable = dataAbertura ? dataAbertura <= new Date() : false;
@@ -134,6 +146,10 @@ function renderCapsulaDetail(capsula: Record<string, unknown>) {
   contentContainer.appendChild(footer);
 }
 
+/**
+ * Exibe estado de erro com opção de retorno para a página de cápsulas.
+ * @param message Mensagem de erro para exibição.
+ */
 function renderError(message: string) {
   clearElement(contentContainer);
   const errorDiv = document.createElement('div');
@@ -151,6 +167,9 @@ function renderError(message: string) {
   contentContainer.appendChild(footer);
 }
 
+/**
+ * Carrega a cápsula da API e controla redirecionamento de autenticação.
+ */
 async function loadCapsulaDetail() {
   if (!isAuthenticated()) {
     window.location.href = './login.html?message=login-required';

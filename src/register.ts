@@ -6,6 +6,10 @@ renderNav();
 const form = document.getElementById('register-form') as HTMLFormElement | null;
 const message = document.getElementById('form-message');
 
+/**
+ * Processa o envio do formulário de cadastro e cria uma nova conta.
+ * @param event Evento de submit do formulário.
+ */
 form?.addEventListener('submit', async (event) => {
   event.preventDefault();
   const formData = new FormData(form);

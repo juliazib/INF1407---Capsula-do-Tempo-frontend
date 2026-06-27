@@ -7,6 +7,10 @@ const form = document.getElementById('reset-form') as HTMLFormElement | null;
 const message = document.getElementById('form-message');
 const nextStep = document.getElementById('next-step');
 
+/**
+ * Solicita recuperação de senha com base no e-mail informado.
+ * @param event Evento de submit do formulário.
+ */
 form?.addEventListener('submit', async (event) => {
   event.preventDefault();
   const formData = new FormData(form);

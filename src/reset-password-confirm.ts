@@ -6,6 +6,10 @@ renderNav();
 const form = document.getElementById('confirm-reset-form') as HTMLFormElement | null;
 const message = document.getElementById('form-message');
 
+/**
+ * Valida token e redefine a senha com a nova credencial informada.
+ * @param event Evento de submit do formulário.
+ */
 form?.addEventListener('submit', async (event) => {
   event.preventDefault();
   const formData = new FormData(form);

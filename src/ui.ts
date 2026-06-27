@@ -1,11 +1,18 @@
 import { getCurrentUser } from './api.js';
 
+/**
+ * Remove todos os elementos filhos de um container.
+ * @param element Elemento que será limpo.
+ */
 function clearElement(element: HTMLElement) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
   }
 }
 
+/**
+ * Renderiza os itens da navegação com base no estado de autenticação.
+ */
 export function renderNav() {
   const nav = document.getElementById('nav-right');
   if (!nav) return;
@@ -46,6 +53,9 @@ export function renderNav() {
   updateNavLinks();
 }
 
+/**
+ * Atualiza o texto de saudação com o nome do usuário autenticado.
+ */
 async function updateUserName() {
   const token = localStorage.getItem('capsula_token');
   if (!token) return;
@@ -64,6 +74,9 @@ async function updateUserName() {
   }
 }
 
+/**
+ * Exibe ou oculta links da barra de navegação conforme autenticação.
+ */
 function updateNavLinks() {
   const token = localStorage.getItem('capsula_token');
   const nav = document.querySelector('.navbar-custom');
@@ -82,12 +95,23 @@ function updateNavLinks() {
   });
 }
 
+/**
+ * Exibe uma mensagem em um elemento de feedback.
+ * @param element Elemento alvo da mensagem.
+ * @param message Texto da mensagem.
+ * @param isSuccess Define sucesso.
+ */
 export function showMessage(element: HTMLElement | null, message: string, isSuccess = false) {
   if (!element) return;
   element.textContent = message;
   element.className = `message ${isSuccess ? 'success' : ''}`.trim();
 }
 
+/**
+ * Lê um parâmetro da query string da URL atual.
+ * @param name Nome do parâmetro de consulta.
+ * @returns Valor encontrado ou null.
+ */
 export function getQueryParam(name: string) {
   return new URLSearchParams(window.location.search).get(name);
 }
